@@ -32,7 +32,7 @@
             transition: background-color 0.2s, text-decoration 0.2s;
         }
         td.clicked {
-            background-color: yellow;
+            background-color: rgba(255, 115, 0, 0.932);
             text-decoration: line-through;
         }
         button {
@@ -41,64 +41,195 @@
             font-size: 16px;
             cursor: pointer;
         }
+
+        
+        #score-counter {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #fffbe7;
+            color: #333;
+            border: 2px solid orange;
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-size: 22px;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 2px 2px 8px #0001;
+        }
     </style>
 </head>
 <body>
+<div id="score-counter">Bingos : <span id="score-value">0</span>
+<div style="font-size:14px; font-weight:normal; margin-top:4px; color:#000000;">
+        Actualisez pour reset votre score
+    </div>
+</div>
 
 <h1>Bingo Musclés Indé by Anton1</h1>
 
 <img src="11Les Musclés dévoilent un ultime Best of de 65 titres.jpg" alt="Les Musclés">
-
+<audio id="bingo-audio" src="win_audio.mp3" preload="auto"></audio>
 <table id="bingoTable"></table>
 
 <button onclick="genererGrille()">Nouvelle grille</button>
 
 <script>
     // Base XL Musclés
-    const musclesXL = [
-        // Répliques cultes (entre guillemets)
-        '"T’es lourd José !"',
-        '"On est fichus !"',
-        '"Chut, il arrive !"',
-        '"On se dispute pour de la nourriture"',
-        '"Scène de ménage ridicule"',
-        '"Un plan qui finit sur un fou rire"',
-        '"On est foutus !"',
-        // Blagues lourdes / gags
-        "Gag homophobe déguisé",
-        "Sous-entendu sexuel raté",
-        "Blague sur le mariage",
-        "Blague sur les vieux",
-        "Réaction exagérée à une petite nouvelle",
-        "Morale finale plaquée et niaise",
-        "Une vanne sur la cuisine ratée",
-        "Scène avec une jalousie mal jouée",
-        // Situations / éléments comiques
-        "Micro pour chanter",
-        "Tout le monde chante faux",
-        "Fauteuil improbable",
-        "Guitare sortie sans raison",
-        "La femme qui crie hystériquement",
-        "Tout le monde danse d’un coup",
-        "Un personnage se déguise",
-        "Quelqu’un se cache dans un placard",
-        "Un personnage prétend être malade pour éviter quelque chose",
-        "Silence gênant après une blague ratée",
-        "Un personnage boude dans un coin",
-        "Un plat brûlé ou raté",
-        "Une pile de vaisselle sale",
-        "Une panne de courant",
-        "Tout le monde se retrouve dans la cuisine",
-        "Un voisin débarque sans prévenir",
-        "Un plat de gratin ou de pâtes géant",
-        "Rideaux improbables",
-        "Un personnage trébuche",
-        "Une fête improvisée",
-        "Une erreur de livraison",
-        "Une porte qui claque",
-        "Un téléphone fixe sonne",
-        "T’es lourd José !"
-    ];
+const musclesXL = [
+    // Répliques cultes / expressions
+    "Eh ben dis donc !",
+    "C’est pas possible ça…",
+    "On va se faire engueuler par Framboisier",
+    "Oh non pas encore !",
+    "Ça va les filles ?",
+    "Les garçons, on a un problème !",
+    "On rigole bien avec vous !",
+    "Vous exagérez !",
+    "Qu’est-ce qu’on va faire ?",
+    "Encore toi ?!",
+    "Je rêve ou quoi ?",
+    "Pas de panique !",
+    "\"T’es lourd José !\"",
+    "\"On est fichus !\"",
+    "\"Chut, il arrive !\"",
+    "\"On se dispute pour de la nourriture\"",
+    "\"Scène de ménage ridicule\"",
+    "\"Un plan qui finit sur un fou rire\"",
+    "\"On est foutus !\"",
+
+    // Blagues lourdes / mal vieillies
+    "Vanne sur le poids de René",
+    "José sort une blague nulle",
+    "Sous-entendu sexuel raté",
+    "Blague sur les blondes",
+    "Vanne homophobe de vestiaire",
+    "Blague sexiste sur les femmes",
+    "Jeu de mots pourri",
+    "Référence lourde au célibat de Framboisier",
+    "Tout le monde rigole sauf la victime de la blague",
+    "José drague lourdement",
+    "Un gag basé sur un malentendu amoureux",
+    "Une vanne sur la cuisine ratée",
+    "Un jeu de mots sur un prénom",
+    "Un personnage se fait traiter de fainéant",
+    "Gag sur la jalousie",
+    "Réplique déplacée qui choque une invitée",
+    "Blague sur le mariage",
+    "Blague sur les vieux",
+    "René à la tête d'un type recherché par Interpol",
+
+    // Situations récurrentes
+    "Tout le monde se retrouve dans la cuisine",
+    "Un plat brûlé ou raté",
+    "Un invité AB débarque (Hélène, Dorothée, etc.)",
+    "Une panne de courant",
+    "Un téléphone fixe sonne",
+    "Un enfant fait une bêtise",
+    "Tout le monde crie en même temps",
+    "Quelqu’un se cache dans un placard",
+    "Au moins deux musclés s'embrouillent",
+    "Un voisin débarque sans prévenir",
+    "Tout le monde chante d’un coup",
+    "Bagarre ou chamaillerie burlesque",
+    "Quelqu’un renverse un plat",
+    "Un personnage se déguise",
+    "Un plan qui se termine en pagaille",
+    "Tout le monde se met à courir dans l’appart",
+    "Un personnage trébuche",
+    "Quelqu’un entre sans frapper",
+    "Tout le monde sort en même temps",
+    "Un coup de sonnette interrompt la scène",
+    "Une erreur de livraison",
+    "Un alien débarque de nulle part",
+    "Regard caméra EVIDENT",
+    "Une fête improvisée",
+    "Une répétition musicale tourne mal",
+    "Un perso colle une meuf/à les main balladeuses",
+    "Quiproquo nul à chier",
+    "Un perso se déguise en femme",
+    "Un perso sort la pire excuse de tous les temps",
+    "Minet à un QI négatif",
+
+    // Stéréotypes / clichés AB
+    "Accent espagnol caricatural de José",
+    "Vanne sexiste sur la cuisine",
+    "Blague sur les hommes irrésistibles",
+    "Personnage macho ridicule",
+    "La femme qui crie hystériquement",
+    "Gag homophobe déguisé",
+    "Un personnage qui se fait gifler",
+    "Morale finale plaquée et niaise",
+    "Tout le monde fait semblant d’être choqué",
+    "Référence ringarde à une star des 90s",
+    "Scène avec une jalousie mal jouée",
+    "Un personnage boude dans un coin",
+    "La mère de famille donne une leçon",
+    "Blague sur les vacances",
+    "Un personnage prétend être malade pour éviter quelque chose",
+    "Acteur.trice choisi(e) pour son physique",
+    "Cette vanne ne passe clairement pas en 2025",
+    "Un des persos secondaires est un cliché ambulant",
+    "Un des persos secondaires à une voix insupportable",
+
+
+    // Objets / décors
+    "Téléphone fixe beige",
+    "Télé cathodique qui bug",
+    "Guitare qui traîne",
+    "Énorme plat de spaghettis",
+    "Chaussures ou fringues fluo",
+    "Décor carton-pâte",
+    "Coussin kitsch",
+    "Fauteuil improbable",
+    "Magnétoscope en arrière-plan",
+    "Poster ringard sur le mur",
+    "Vieux transistor radio",
+    "Vase qui se casse",
+    "Pyjama ridicule",
+    "Costume à paillettes",
+    "Objets posés qui tombent",
+    "Chapeau ridicule",
+    "Rideaux improbables",
+    "Table trop petite pour tout le monde",
+    "Téléphone à cadran",
+    "Micro pour chanter",
+    "Un plat de gratin ou de pâtes géant",
+    "Une nappe à carreaux",
+    "Une pile de vaisselle sale",
+    "Une valise posée dans le salon",
+
+    // Running gags typiques AB
+    "Entrée théâtrale d’un personnage",
+    "Tout le monde répète la même phrase",
+    "Silence gênant après une blague ratée",
+    "Référence forcée à Dorothée",
+    "Chanson AB improvisée",
+    "Quelqu’un qui s’évanouit pour rien",
+    "Une porte qui claque",
+    "Tout le monde qui s’assoit en rang d’oignon",
+    "Personnage qui parle au public (regard caméra)",
+    "Quelqu’un qui oublie sa réplique",
+    "Musique d’ambiance ringarde",
+    "Un personnage qui sort en claquant la porte",
+    "Tout le monde danse d’un coup",
+    "Quelqu’un fait semblant d’être important",
+    "Réaction exagérée à une petite nouvelle",
+    "Guitare sortie sans raison",
+    "Tout le monde chante faux",
+    "Répétition musicale interrompue",
+    "Cliffhanger ridicule en fin d’épisode",
+    "Fétichisme des pieds à peine camouflé",
+    "Micro perche dans le champ"
+];
+
+
+    let score = 0;
+    let lastBingoState = Array(12).fill(false); // 5 rows + 5 cols + 2 diags
+
+    function updateScoreCounter() {
+        document.getElementById("score-value").textContent = score;
+    }
 
     function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
@@ -108,17 +239,67 @@
         return array;
     }
 
+    function checkBingo() {
+        const table = document.getElementById("bingoTable");
+        const cells = table.getElementsByTagName("td");
+        const grid = Array.from({length: 5}, (_, i) =>
+            Array.from({length: 5}, (_, j) => cells[i*5 + j].classList.contains("clicked"))
+        );
+
+        let bingoLines = Array(12).fill(false);
+
+        // Lignes
+        for (let i = 0; i < 5; i++) {
+            if (grid[i].every(Boolean)) bingoLines[i] = true;
+        }
+        // Colonnes
+        for (let j = 0; j < 5; j++) {
+            if ([0,1,2,3,4].every(i => grid[i][j])) bingoLines[5 + j] = true;
+        }
+        // Diagonale principale
+        if ([0,1,2,3,4].every(i => grid[i][i])) bingoLines[10] = true;
+        // Diagonale secondaire
+        if ([0,1,2,3,4].every(i => grid[i][4-i])) bingoLines[11] = true;
+
+        return bingoLines;
+    }
+
     function genererGrille() {
         const tirage = shuffle([...musclesXL]).slice(0, 25); // 25 éléments aléatoires
         const table = document.getElementById("bingoTable");
         table.innerHTML = ""; // vider l'ancienne grille
+        lastBingoState = Array(12).fill(false);
 
         for (let i = 0; i < 5; i++) {
             const tr = document.createElement("tr");
             for (let j = 0; j < 5; j++) {
                 const td = document.createElement("td");
                 td.textContent = tirage[i*5 + j];
-                td.onclick = () => td.classList.toggle("clicked"); // cliquer pour barrer
+                td.onclick = () => {
+                    td.classList.toggle("clicked");
+                    const bingoLines = checkBingo();
+                    let newBingo = false;
+                    let newLines = 0;
+                    for (let k = 0; k < 12; k++) {
+                        if (bingoLines[k] && !lastBingoState[k]) {
+                            newBingo = true;
+                            newLines++;
+                        }
+                    }
+                    if (newBingo) {
+                        score += newLines;
+                        updateScoreCounter();
+                        const audio = document.getElementById("bingo-audio");
+                        if (audio) {
+                            audio.currentTime = 0;
+                            audio.play();
+                        }
+                        setTimeout(() => {
+                            alert("🎉 Bingo ! Tu as complété une ligne ! Framboisier serait fier !");
+                        }, 100);
+                    }
+                    lastBingoState = bingoLines;
+                };
                 tr.appendChild(td);
             }
             table.appendChild(tr);
@@ -126,8 +307,8 @@
     }
 
     // Génération initiale
+    updateScoreCounter();
     genererGrille();
 </script>
-
 </body>
 </html>
