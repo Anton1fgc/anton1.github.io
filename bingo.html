@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Bingo Musclés Indé by Anton1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            margin-bottom: 10px;
+        }
+        img {
+            width: 500px; /* ajuste la taille selon ton goût */
+            margin-bottom: 20px;
+            border: 3px solid #333;
+        }
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+        td {
+            width: 250px;
+            height: 60px;
+            border: 2px solid #333;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            padding: 5px;
+            transition: background-color 0.2s, text-decoration 0.2s;
+        }
+        td.clicked {
+            background-color: yellow;
+            text-decoration: line-through;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Bingo Musclés Indé by Anton1</h1>
+
+<img src="11Les Musclés dévoilent un ultime Best of de 65 titres.jpg" alt="Les Musclés">
+
+<table id="bingoTable"></table>
+
+<button onclick="genererGrille()">Nouvelle grille</button>
+
+<script>
+    // Base XL Musclés
+    const musclesXL = [
+        // Répliques cultes (entre guillemets)
+        '"T’es lourd José !"',
+        '"On est fichus !"',
+        '"Chut, il arrive !"',
+        '"On se dispute pour de la nourriture"',
+        '"Scène de ménage ridicule"',
+        '"Un plan qui finit sur un fou rire"',
+        '"On est foutus !"',
+        // Blagues lourdes / gags
+        "Gag homophobe déguisé",
+        "Sous-entendu sexuel raté",
+        "Blague sur le mariage",
+        "Blague sur les vieux",
+        "Réaction exagérée à une petite nouvelle",
+        "Morale finale plaquée et niaise",
+        "Une vanne sur la cuisine ratée",
+        "Scène avec une jalousie mal jouée",
+        // Situations / éléments comiques
+        "Micro pour chanter",
+        "Tout le monde chante faux",
+        "Fauteuil improbable",
+        "Guitare sortie sans raison",
+        "La femme qui crie hystériquement",
+        "Tout le monde danse d’un coup",
+        "Un personnage se déguise",
+        "Quelqu’un se cache dans un placard",
+        "Un personnage prétend être malade pour éviter quelque chose",
+        "Silence gênant après une blague ratée",
+        "Un personnage boude dans un coin",
+        "Un plat brûlé ou raté",
+        "Une pile de vaisselle sale",
+        "Une panne de courant",
+        "Tout le monde se retrouve dans la cuisine",
+        "Un voisin débarque sans prévenir",
+        "Un plat de gratin ou de pâtes géant",
+        "Rideaux improbables",
+        "Un personnage trébuche",
+        "Une fête improvisée",
+        "Une erreur de livraison",
+        "Une porte qui claque",
+        "Un téléphone fixe sonne",
+        "T’es lourd José !"
+    ];
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function genererGrille() {
+        const tirage = shuffle([...musclesXL]).slice(0, 25); // 25 éléments aléatoires
+        const table = document.getElementById("bingoTable");
+        table.innerHTML = ""; // vider l'ancienne grille
+
+        for (let i = 0; i < 5; i++) {
+            const tr = document.createElement("tr");
+            for (let j = 0; j < 5; j++) {
+                const td = document.createElement("td");
+                td.textContent = tirage[i*5 + j];
+                td.onclick = () => td.classList.toggle("clicked"); // cliquer pour barrer
+                tr.appendChild(td);
+            }
+            table.appendChild(tr);
+        }
+    }
+
+    // Génération initiale
+    genererGrille();
+</script>
+
+</body>
+</html>
