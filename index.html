@@ -58,8 +58,24 @@
             box-shadow: 2px 2px 8px #0001;
         }
     </style>
+<script>
+     // Dark mode toggle
+    const darkBtn = document.getElementById('darkmode-toggle');
+    function setDarkMode(on) {
+        document.body.classList.toggle('dark', on);
+        darkBtn.textContent = on ? '☀️' : '🌙';
+        localStorage.setItem('darkmode', on ? '1' : '0');
+    }
+    darkBtn.onclick = () => setDarkMode(!document.body.classList.contains('dark'));
+    // Init dark mode from storage or system
+    setDarkMode(
+        localStorage.getItem('darkmode') === '1' ||
+        (localStorage.getItem('darkmode') === null && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    );
+</script>
 </head>
 <body>
+<button id="darkmode-toggle" title="Mode sombre/clair">🌙</button>
 <div id="score-counter">Bingos : <span id="score-value">0</span>
 <div style="font-size:14px; font-weight:normal; margin-top:4px; color:#000000;">
         Actualisez pour reset votre score
