@@ -79,7 +79,9 @@ img {
     box-shadow: var(--shadow);
     transition: background 0.2s, color 0.2s, text-decoration 0.2s;
     user-select: none;
-    word-break: break-word;
+    word-break: normal;
+    overflow-wrap: break-word;
+    hyphens: auto;
     line-height: 1.2;
 }
 
